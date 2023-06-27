@@ -1,0 +1,17 @@
+server:
+  port: 2222
+#  env
+spring:
+  profiles:
+    active: local
+  application:
+    name: demo-gateway
+  webflux:
+    base-path: /gateway
+
+  #  database
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: root
+    password: 123456
+    driver-class-name: org.postgresql.Driver

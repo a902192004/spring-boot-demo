@@ -1,0 +1,55 @@
+#---------------------------多環境配置(直接搜尋環境名)-----------------------------
+# local
+spring:
+  profiles: local
+  application:
+    name: config
+  # database
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: root
+    password: 123456
+  # Redis setting
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+---
+# dev
+spring:
+  profiles: dev
+  application:
+    name: config
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username:
+    password:
+
+---
+# prod
+spring:
+  profiles: prod
+  application:
+    name: config
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username:
+    password:
+
+---
+spring:
+  profiles:
+    active: local
+
+pring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/TEK-Leads/Config-Properties.git
+          clone-on-start: true
+        bootstrap: true
+      enabled: true
+  application:
+    name: Config-Server
