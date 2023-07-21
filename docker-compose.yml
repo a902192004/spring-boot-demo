@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  # config
+  config-service:
+    image: a902192004/docker-test:config
+    ports:
+      - "2223:2223"
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: ${PROFILE_NAME:local}
+    healthcheck:
+    # interval<間隔>：兩次健康檢查的間隔，默認為 30 秒，單位(h/m/s)
+      interval: 5s
+    # timeout<時長>：健康檢查命令運行超時時間，如果超過這個時間，本次健康檢查就被視為失敗，默認 30 秒，單位(h/m/s)
+      timeout: 2s
+    # retries<次數>：當連續失敗指定次數後，則將容器狀態視為 unhealthy，默認 3 次。
+      retries: 3
+  # gateway
+  gateway-service:
+    image: a902192004/docker-test:gateway
+    container_name: gateway
+    ports:
+      - "2222:2222"
+    restart: always
+  # auth
+  auth-service:
+    image: a902192004/docker-test:auth
+    container_name: auth
+    ports:
+      - "2424:2424"
+    restart: always

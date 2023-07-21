@@ -1,11 +1,26 @@
-#-------------------------通用配置---------------------------
 server:
   port: 2223
 spring:
-  datasource:
-    # postgresql驅動
-#    driver-class-name: org.postgresql.Driver
-  jackson:
-    generator:
-      # JSON 序列化時，將所有 Number 類型的屬性都轉為 String 類型返回，避免前端數據精度丟失的問題。
-      write-numbers-as-strings: true
+  profiles:
+    active: native
+#    group:
+#      "local": localDB, localRedis
+#      "dev": devDB, devRedis
+#      "prod": prodDB, prodRedis
+  application:
+    name: config
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: classpath:config/
+#--- #-------------------------通用配置----------------------------
+#spring:
+#  jackson:
+#    generator:
+#      # JSON 序列化時，將所有 Number 類型的屬性都轉為 String 類型返回，避免前端數據精度丟失的問題。
+#      write-numbers-as-strings: true
+#--- # --------------------將db的欄位名稱底線轉成駝峰-------------------
+#mybatis:
+#  configuration:
+#    map-underscore-to-camel-case: true

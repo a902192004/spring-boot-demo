@@ -1,0 +1,71 @@
+version: "3.7"
+services:
+  # redis
+  redis:
+    image: a902192004/docker-test:redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    restart: always
+    volumes:
+      - "~/Documents/docker/data/redis:/data/redis"
+
+  # postgres
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - "~/Documents/docker/data/postgres:/data/postgres"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+
+  # elastic
+  elastic:
+    image: elasticsearch:7.8.0
+    container_name: elastic
+    ports:
+      - 9002:9002
+    volumes:
+      - "~/Documents/docker/data/elasticsearch:/data/elasticsearch"
+
+  # mongo
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - "~/Documents/docker/data/mongo:/data/mongo"
+
+  # rabbitmq
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+    volumes:
+      - "~/Documents/docker/data/rabbitmq:/data/rabbitmq"
+
+# 還沒使用
+#  nacos:
+#    image: nacos/nacos-server:1.4.1
+#    ports:
+#      - 8848:8848
+#    volumes:
+#      - "nacoslogs:/home/nacos/logs/"
+#    env_file:
+#      - nacos/nacos-standlone-mysql.env
+#    depends_on:
+#      - mysql
+
+# 只看了 host mode 和 bridge mode 還沒完全懂 https://ithelp.ithome.com.tw/articles/10206725
+#networks:
+#  application:
+#    driver: bridge
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 172.28.0.0/16
+#          gateway: 172.28.0.1

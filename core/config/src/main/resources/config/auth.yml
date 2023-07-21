@@ -1,0 +1,7 @@
+server:
+  servlet:
+    context-path: /auth
+  port: 2424
+spring:
+  application:
+    name: auth-service

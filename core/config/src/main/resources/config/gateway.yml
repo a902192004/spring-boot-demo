@@ -1,0 +1,44 @@
+server:
+#  servlet:
+#    context-path: /gateway
+  port: 2222
+  application:
+    name: gateway-service
+
+spring:
+  cloud.gateway.routes:
+        - id: auth-service
+          uri: http://localhost:2424
+#          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+#          filter
+            # 熔斷降級
+            - name: Hystrix
+              args:
+                name: fallbackCmdA
+                fallbackUri: forward:/fallback
+            # 令牌桶限流
+            - name: RequestRateLimiter
+              args:
+                 # 使用 SpEL 表達式從 Spring 容器中獲取 Bean 對象 RateLimiterConfig
+                 key-resolver: "#{@ipKeyResolver}"
+                 # 令牌桶的上限
+                 redis-rate-limiter.burstCapacity: 5
+                 # 令牌桶每秒填充平均速率
+                 redis-rate-limiter.replenishRate: 3
+                 # 令牌桶每次請求消耗令牌的數量
+                 redis-rate-limiter.requestTokens: 1
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 20 #併發執行的最大線程數，默認10
+      maxQueueSize: 1000 #BlockingQueue的最大隊列數，默認值-1
+      queueSizeRejectionThreshold: 400
+# ------------------nacos------------------
+#spring:
+#  cloud.nacos:
+#      discovery:
+#      config:
+
