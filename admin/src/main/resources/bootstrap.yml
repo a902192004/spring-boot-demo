@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: admin
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:2223}"
+  profiles:
+    active: ${PROFILE_NAME:local}

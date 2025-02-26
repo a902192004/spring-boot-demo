@@ -2,33 +2,61 @@ version: "3.7"
 services:
   # redis
   redis:
-    image: a902192004/docker-test:redis
+    image: redis:latest
     container_name: redis
     ports:
       - 6379:6379
     restart: always
     volumes:
-      - "~/Documents/docker/data/redis:/data/redis"
+      - ~Documents/docker/volumes/redis:/data/redis
 
   # postgres
   postgres:
-    image: postgres:latest
+    image: postgres
     container_name: postgres
     ports:
       - 5432:5432
     volumes:
-      - "~/Documents/docker/data/postgres:/data/postgres"
+      - ~Documents/docker/volumes/postgres:/data/postgres
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      - POSTGRES_DB=demo
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123456
 
   # elastic
   elastic:
-    image: elasticsearch:7.8.0
+    image: elasticsearch:8.7.0
     container_name: elastic
     ports:
-      - 9002:9002
+      - 9200:9200
+      - 9300:9300
+#    volumes:
+#      - ~Documents/docker/volumes/elastic/plugins:/usr/share/elasticsearch/plugins
+#      - ~Documents/docker/volumes/elastic/data:/usr/share/elasticsearch/data
+#      - ~Documents/docker/volumes/elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+#      - "xpack.security.enabled=false"#
+      - discovery.type= single-node # 以單一節點模式啓動
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # 設置使用jvm內存大小
+    networks:
+      - es
+
+
+  # kibana
+  kibana:
+    image: kibana:8.7.0
+    container_name: kibana
+    depends_on:
+      - elastic
+    environment:
+#      ELASTICSEARCH_HOSTS: http://elasticsearch:9200 # 設置訪問elasticsearch的地址
+      I18N_LOCALE: zh-CN
+    ports:
+      - 5601:5601
     volumes:
-      - "~/Documents/docker/data/elasticsearch:/data/elasticsearch"
+        - ~Documents/docker/volumes/kibana/config/kibana.yml:/user/share/kibana/config/kibana.yml
+    networks:
+      - es
 
   # mongo
   mongo:
@@ -36,8 +64,8 @@ services:
     container_name: mongo
     ports:
       - 27017:27017
-    volumes:
-      - "~/Documents/docker/data/mongo:/data/mongo"
+#    volumes:
+#      - "~/Documents/docker/data/mongo:"
 
   # rabbitmq
   rabbitmq:
@@ -45,8 +73,9 @@ services:
     container_name: rabbitmq
     ports:
       - 5672:5672
-    volumes:
-      - "~/Documents/docker/data/rabbitmq:/data/rabbitmq"
+#    volumes:
+#      - "~/Documents/docker/data/rabbitmq/config:/usr/s"
+
 
 # 還沒使用
 #  nacos:
@@ -61,7 +90,8 @@ services:
 #      - mysql
 
 # 只看了 host mode 和 bridge mode 還沒完全懂 https://ithelp.ithome.com.tw/articles/10206725
-#networks:
+networks:
+  es:
 #  application:
 #    driver: bridge
 #    ipam:

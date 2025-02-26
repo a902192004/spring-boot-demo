@@ -13,6 +13,7 @@ public class HealthController {
     @GetMapping("/test")
     public String health() {
         log.info("auth service health");
+
         return "success";
     }
 

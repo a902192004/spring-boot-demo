@@ -20,7 +20,6 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/hb/**"
                         ).permitAll()
-
 //                .requestMatchers("").hasAnyRole()
 //                .requestMatchers("").hasAnyAuthority()
                 .anyRequest().authenticated()

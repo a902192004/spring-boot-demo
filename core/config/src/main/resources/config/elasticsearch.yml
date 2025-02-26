@@ -1,0 +1,10 @@
+server:
+  servlet:
+    context-path: /elastic
+  port: 2225
+spring:
+  application:
+    name: elastic-service
+
+
+

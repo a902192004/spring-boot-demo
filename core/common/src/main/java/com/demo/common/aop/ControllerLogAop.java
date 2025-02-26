@@ -8,12 +8,18 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -28,8 +34,9 @@ public class ControllerLogAop {
     private static final String FILE = "FILE";
     private static final String NO_SUPPORT = "no support method!!!";
 
-    private static final String ALL_CONTROLLER_PATH = "execution (public * com..*.controller..*.*(..))";
-    private static final String AND = " && ";
+    private static final String ALL_CONTROLLER_PATH = "execution (public * com.demo.*.controller..*.*(..))";
+
+//        private static final String ALL_CONTROLLER_PATH = "execution (public * com.demo.auth.controller..*(..))";
 
     @Pointcut(ALL_CONTROLLER_PATH)
     public void allControllerLayer() {
@@ -37,6 +44,7 @@ public class ControllerLogAop {
 
     @Around(value = "allControllerLayer()")
     public Object doAroundController(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("234s");
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         HttpServletRequest request = getHttpServletRequest();

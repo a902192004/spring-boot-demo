@@ -7,6 +7,10 @@ server:
 
 spring:
   cloud.gateway.routes:
+        - id: elastic-service
+          uri: http://localhost:2225
+          predicates:
+            - Path=/elasticsearch/**
         - id: auth-service
           uri: http://localhost:2424
 #          uri: lb://auth-service

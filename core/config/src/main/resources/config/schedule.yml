@@ -1,0 +1,7 @@
+server:
+  servlet:
+    context-path: /task
+  port: 2333
+spring:
+  application:
+    name: task-service

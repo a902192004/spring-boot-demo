@@ -5,3 +5,16 @@ server:
 spring:
   application:
     name: auth-service
+# admin
+  boot:
+    admin:
+      client:
+        url: http://localhost:2000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    env:
+      enabled: true

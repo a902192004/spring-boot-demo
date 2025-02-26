@@ -1,0 +1,7 @@
+server:
+  servlet:
+    context-path: /admin
+  port: 2000
+spring:
+  application:
+    name: admin-service
